@@ -375,16 +375,20 @@ class Baseline(object):
 		for iteration in range(N//self.batch_size):
 			with torch.no_grad():
 				empty_segment = np.asarray([])
-				content = next(content_iter).cuda()
-				a_reference = next(art_iter).cuda()
-				p_reference = next(photo_iter).cuda()
+				try:
+					content = next(content_iter).cuda()
+					a_reference = next(art_iter).cuda()
+					p_reference = next(photo_iter).cuda()
 
-				art_alphas = self.get_alphas(a_reference)
-				photo_alphas = self.get_alphas(p_reference)
-				art_stylized_output = self.network(content, a_reference, empty_segment, empty_segment, is_recon=True, alphas=art_alphas, type='photo')
-				print(str(iteration), 'art : ' , art_alphas)
-				photo_stylized_output = self.network(content, p_reference, empty_segment, empty_segment, is_recon=True, alphas=photo_alphas, type='photo')
-				print(str(iteration), 'photo : ' , photo_alphas)
+					art_alphas = self.get_alphas(a_reference)
+					photo_alphas = self.get_alphas(p_reference)
+					art_stylized_output = self.network(content, a_reference, empty_segment, empty_segment, is_recon=True, alphas=art_alphas, type='photo')
+					print(str(iteration), 'art : ' , art_alphas)
+					photo_stylized_output = self.network(content, p_reference, empty_segment, empty_segment, is_recon=True, alphas=photo_alphas, type='photo')
+					print(str(iteration), 'photo : ' , photo_alphas)
+				except StopIteration:
+					print('error with iterator', iteration)
+					print(content_iter)
 				
 			imsave(art_stylized_output,  os.path.join(dir_path,  'single_art_stylized_'+str(iteration)+'.png'), nrow=self.batch_size )
 			imsave(photo_stylized_output,  os.path.join(dir_path, 'single_photo_stylized_'+str(iteration)+'.png'), nrow=self.batch_size )
