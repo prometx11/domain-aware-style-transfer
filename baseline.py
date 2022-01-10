@@ -388,6 +388,8 @@ class Baseline(object):
 					print('creating new iterator')
 					content_iter = iter(content_loader)
 					content = next(content_iter)
+					a_reference = next(art_iter).cuda()
+					p_reference = next(photo_iter).cuda()
 
 				art_alphas = self.get_alphas(a_reference)
 				photo_alphas = self.get_alphas(p_reference)
