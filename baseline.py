@@ -387,7 +387,7 @@ class Baseline(object):
 					print('error with iterator', iteration, e)
 					print('creating new iterator')
 					content_iter = iter(content_loader)
-					content = next(content_iter)
+					content = next(content_iter).cuda()
 					a_reference = next(art_iter).cuda()
 					p_reference = next(photo_iter).cuda()
 
