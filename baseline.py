@@ -399,8 +399,12 @@ class Baseline(object):
 				print(str(iteration), 'photo : ' , photo_alphas)
 				
 				
-			imsave(art_stylized_output,  os.path.join(dir_path,  'single_art_stylized_'+str(iteration)+'.png'), nrow=self.batch_size )
-			imsave(photo_stylized_output,  os.path.join(dir_path, 'single_photo_stylized_'+str(iteration)+'.png'), nrow=self.batch_size )
+			art_stylized_fileName = os.path.join(dir_path,  'single_art_stylized_'+str(iteration)+'.png')
+			photo_stylized_fileName =  os.path.join(dir_path,'single_photo_stylized_'+str(iteration)+'.png')
+			print(f"saving art stylized to {art_stylized_fileName}")
+			print(f"saving photo stylized to {photo_stylized_fileName}")
+			imsave(art_stylized_output, art_stylized_fileName , nrow=self.batch_size )
+			imsave(photo_stylized_output, photo_stylized_fileName , nrow=self.batch_size )
 			
 			del content, a_reference, p_reference, art_stylized_output, photo_stylized_output
 			torch.cuda.empty_cache()
